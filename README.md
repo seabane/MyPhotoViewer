@@ -1,0 +1,1 @@
+a tool for view photo from harddisk simply and lite.
