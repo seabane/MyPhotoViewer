@@ -16,8 +16,13 @@ exports.imgs = function(req, res){
 	var img = new Image;
   	
   	img.onload = function(){
-  		var width = img.width / 6
-  		 ,height = img.height / 6
+  		
+  		var x = 7.3;
+  		if(img.width < 4500){
+  		  x = 5.5;
+  		}
+  		var width = img.width / x
+  		 ,height = img.height / x
   		 ,canvas = new Canvas(width , height)
   		 ,ctx = canvas.getContext('2d');
   		 
