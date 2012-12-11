@@ -16,8 +16,8 @@ exports.imgs = function(req, res){
 	var img = new Image;
   	
   	img.onload = function(){
-  		var width = 720
-  		 ,height = 480
+  		var width = img.width / 6
+  		 ,height = img.height / 6
   		 ,canvas = new Canvas(width , height)
   		 ,ctx = canvas.getContext('2d');
   		 
