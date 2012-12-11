@@ -1,5 +1,91 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div.navbar.navbar-fixed-top
+    div.navbar-inner
+      div
+        a.brand(href='#') <<雨崩照片集>>
+  div.container-fluid
+    div.row-fluid
+      div.span3
+        div.well.sidebar-nav
+          ul.nav.nav-list
+            li.nav-header 吴炜
+            li 
+              a(href='/index/wuwei>2012-11-30') 2012-11-30
+            li
+              a(href='/index/wuwei>2012-12-01') 2012-12-01
+            li.nav-header 黄睿
+            li
+              a(href='/index/huangrui>d60') d60
+            li
+              a(href='/index/huangrui>eosm') eos m
+      div.span9.well(style='width:750px')
+        div.row
+          div.span5
+          div.span5
+            div#picNum 0/0
+          div.span2
+            a#picDownloadBtn.btn.btn-small.btn-primary(href="#",target="_blank") 下载原图
+          div#myCarousel.span12.carousel.slide(style='width:720px')
+            div#imgItems.carousel-inner
+            a.carousel-control.left(href = '#myCarousel',data-slide = 'prev') &lsaquo;
+            a.carousel-control.right(href = '#myCarousel',data-slide = 'next') &rsaquo;
+  script(type='text/javascript')
+    var files = !{JSON.stringify(file)};
+    $('#myCarousel').carousel({
+      interval: 4000
+    });
+    
+    //init
+    if(!!files){
+      $('#imgItems').append(getHtmlForImgElement(files.length - 1)); //last
+      $('#imgItems').append(getHtmlForImgElement(0,true)); //no 1
+      $('#imgItems').append(getHtmlForImgElement(1)); //no 2
+      $('#picNum').html("1/" + files.length);
+    }
+    
+    $('#myCarousel').on('slid',function(){refreshImgIndex();});
+    function initImgElement(index){
+      var children = $('#imgItems').children();
+      $.each(children,function(itemIndex,element){
+        var item = $(element);
+        //first item
+        if($(item).hasClass('active')){
+          //before item
+          if(index == 0){
+            item.before(getHtmlForImgElement(files.length - 1));
+          }
+          else{
+            item.before(getHtmlForImgElement(index - 1));
+          }
+          //after item
+          if(index == files.length - 1){
+            item.after(getHtmlForImgElement(0));
+          }
+          else{
+            item.after(getHtmlForImgElement(index + 1));
+          }
+        }
+        else{
+          item.remove();
+        }
+      });
+    }
+    
+    //when img index change
+    function refreshImgIndex(){
+      var index = $('#imgItems .active').attr('imgIndex');
+      initImgElement(parseInt(index));
+      $('#picNum').html((parseInt(index) + 1) + "/" + files.length);
+      $('#picDownloadBtn').attr('href','/downloadImg/' + files[parseInt(index)]);
+    }
+    
+    function getHtmlForImgElement(index,isActive){
+      if(isActive){
+        return '<div imgIndex="' + index + '" class="item active"><img src="/imgs/' + files[index] + '"/></div>';
+      }
+      else{
+        return '<div imgIndex="' + index + '" class="item"><img src="/imgs/' + files[index] + '"/></div>'
+      }
+    }
