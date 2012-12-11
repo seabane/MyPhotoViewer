@@ -34,7 +34,7 @@ block content
   script(type='text/javascript')
     var files = !{JSON.stringify(file)};
     $('#myCarousel').carousel({
-      interval: 4000
+      interval: 10000
     });
     
     //init
@@ -52,19 +52,21 @@ block content
         var item = $(element);
         //first item
         if($(item).hasClass('active')){
-          //before item
-          if(index == 0){
-            item.before(getHtmlForImgElement(files.length - 1));
-          }
-          else{
-            item.before(getHtmlForImgElement(index - 1));
-          }
+          
           //after item
           if(index == files.length - 1){
             item.after(getHtmlForImgElement(0));
           }
           else{
             item.after(getHtmlForImgElement(index + 1));
+          }
+          
+          //before item
+          if(index == 0){
+            item.before(getHtmlForImgElement(files.length - 1));
+          }
+          else{
+            item.before(getHtmlForImgElement(index - 1));
           }
         }
         else{
